@@ -11,21 +11,22 @@ option(STATIC_LIBCPP "Statically link CLI to libc++" FALSE)
 
 include_directories(include)
 include_directories(../sqlite3_api_wrapper/include)
-add_executable(shell ${SHELL_SOURCES})
-target_link_libraries(shell sqlite3_api_wrapper_static
+llvm_multisource(duckdb_shell ${SHELL_SOURCES})
+add_dependencies(sqlite3_api_wrapper_static build-timeit)
+target_link_libraries(duckdb_shell sqlite3_api_wrapper_static
                       ${DUCKDB_EXTRA_LINK_FLAGS})
-link_threads(shell)
+link_threads(duckdb_shell)
 if(STATIC_LIBCPP)
   message("Statically linking CLI")
-  target_link_libraries(shell -static-libstdc++ -static-libgcc)
+  target_link_libraries(duckdb_shell -static-libstdc++ -static-libgcc)
 endif()
 
 if(NOT AMALGAMATION_BUILD AND NOT WIN32)
-  target_link_libraries(shell duckdb_utf8proc)
+  target_link_libraries(duckdb_shell duckdb_utf8proc)
 endif()
 
-set_target_properties(shell PROPERTIES OUTPUT_NAME duckdb)
-set_target_properties(shell PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+set_target_properties(duckdb_shell PROPERTIES OUTPUT_NAME duckdb)
+set_target_properties(duckdb_shell PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                        ${PROJECT_BINARY_DIR})
 
 install(TARGETS shell RUNTIME DESTINATION "${INSTALL_BIN_DIR}")

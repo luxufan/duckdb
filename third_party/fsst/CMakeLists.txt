@@ -27,6 +27,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 #endif()
 
 add_library(duckdb_fsst STATIC libfsst.cpp fsst_avx512.cpp fsst_avx512_unroll1.inc fsst_avx512_unroll2.inc fsst_avx512_unroll3.inc fsst_avx512_unroll4.inc)
+add_dependencies(duckdb_fsst build-timeit)
 
 target_include_directories(duckdb_fsst PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 set_target_properties(duckdb_fsst PROPERTIES EXPORT_NAME duckdb_fsst)
