@@ -11,6 +11,7 @@ option(STATIC_LIBCPP "Statically link CLI to libc++" FALSE)
 
 include_directories(include)
 include_directories(../sqlite3_api_wrapper/include)
+list(APPEND TEST_TARGETS duckdb_shell)
 llvm_multisource(duckdb_shell ${SHELL_SOURCES})
 add_dependencies(sqlite3_api_wrapper_static build-timeit)
 target_link_libraries(duckdb_shell sqlite3_api_wrapper_static
